@@ -16,71 +16,11 @@
 #define BAUDRATE 115200  //Serial port
 
 #include <Wire.h>
-#include <DFRobotDFPlayerMini.h>
-
 
 // Some PMD Hardware
-
 // Pins for switches and LEDs and more
 #define BOOT_BUTTON 0
 //FLE const int LED_BUILTIN = 2;
-const int LED_1 = 15;
-const int LED_2 = 4;
-const int LED_3 = 5;
-const int LED_4 = 18;
-const int LED_5 = 19;
-
-const int SW1 = 36;
-const int SW2 = 39;
-const int SW3 = 34;
-const int SW4 = 35;
-
-// bool dfpAvailable = false;
-bool availableDFPLAYER = false;
-
-//Claases defined below
-class Flasher {
-  // Class Member Variables
-  // These are initialized at startup
-  int ledPin;    // the number of the LED pin
-  long OnTime;   // milliseconds of on-time
-  long OffTime;  // milliseconds of off-time
-
-  // These maintain the current state
-  int ledState;                  // ledState used to set the LED
-  unsigned long previousMillis;  // will store last time LED was updated
-
-  // Constructor - creates a Flasher
-  // and initializes the member variables and state
-public:
-  Flasher(int pin, long on, long off) {
-    ledPin = pin;
-    pinMode(ledPin, OUTPUT);
-
-    OnTime = on;
-    OffTime = off;
-
-    ledState = LOW;
-    previousMillis = 0;
-  }
-
-  void Update() {  // defining a member function of the Flasher class
-    // check to see if it's time to change the state of the LED
-    unsigned long currentMillis = millis();
-
-    if ((ledState == HIGH) && (currentMillis - previousMillis >= OnTime)) {
-      ledState = LOW;                  // Turn it off
-      previousMillis = currentMillis;  // Remember the time
-      digitalWrite(ledPin, ledState);  // Update the actual LED
-    } else if ((ledState == LOW) && (currentMillis - previousMillis >= OffTime)) {
-      ledState = HIGH;                 // turn it on
-      previousMillis = currentMillis;  // Remember the time
-      digitalWrite(ledPin, ledState);  // Update the actual LED
-    }
-  }
-};
-
-
 
 
 void splashserial(void) {
@@ -97,90 +37,29 @@ void splashserial(void) {
   Serial.println();
 }
 
-//Defining the behavior
-// Flasher led1(ledpin#, on time, off time);
-Flasher led1(LED_1, 250, 250);                          // LED 1 blinks 0.5 period and 50% duty cycle
-Flasher led2(LED_2, 1200 * 20 / 100, 1200 * 80 / 100);  // LED 2 blinks 1.2 period and 20% duty cycle
-Flasher led3(LED_3, 1400 * 62 / 100, 1400 * 38 / 100);  // LED 3 blinks 1.4 period and 62% duty cycle
-Flasher led4(LED_4, 3000 * 55 / 100, 3000 * 45 / 100);  // LED 4 blinks 3.0 period and 55% duty cycle
-Flasher led5(LED_5, 7500 * 10 / 100, 7500 * 90 / 100);  // LED 5 blinks 7.5 period and 10% duty cycle
 
 // The Setup
 
 void setup() {
-  pinMode(SW1, INPUT);  // sets the digital pin 36 as input
-  pinMode(SW2, INPUT);  // sets the digital pin 39 as input
-  pinMode(SW3, INPUT);  // sets the digital pin 34 as input
-  pinMode(SW4, INPUT);  // sets the digital pin 35 as input
 
-  //setting GPIO to initial values
-  // FLE pinMode(LED_BUILTIN, OUTPUT);     // set the LED pin mode
-  // digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
-  // pinMode(LED_1, OUTPUT);           // set the LED pin mode
-  // digitalWrite(LED_1, HIGH);        // turn the LED on (HIGH is the voltage level)
-  // pinMode(LED_2, OUTPUT);           // set the LED pin mode
-  // digitalWrite(LED_2, HIGH);        // turn the LED on (HIGH is the voltage level)
-  // pinMode(LED_3, OUTPUT);           // set the LED pin mode
-  // digitalWrite(LED_3, HIGH);        // turn the LED on (HIGH is the voltage level)
-  // pinMode(LED_4, OUTPUT);           // set the LED pin mode
-  // digitalWrite(LED_4, HIGH);        // turn the LED on (HIGH is the voltage level)
-  // pinMode(LED_5, OUTPUT);           // set the LED pin mode
-  // digitalWrite(LED_5, HIGH);        // turn the LED on (HIGH is the voltage level)
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);  //Make built in LED low at end of setup.
 
   Serial.begin(BAUDRATE);
   while (!Serial) {
     ;  // wait for serial port to connect. Needed for native USB
   }
-
   splashserial();
+
   Wire.begin();
   initOLED();
   splashOLED();
-  //initDFP();
-  //splashDFPlayer();
-  // More setup code here
-
-  // digitalWrite(LED_1, LOW);        //Make built in LED low at end of setup.
-  // digitalWrite(LED_2, LOW);        //Make built in LED low at end of setup.
-  // digitalWrite(LED_3, LOW);        //Make built in LED low at end of setup.
-  // digitalWrite(LED_4, LOW);        //Make built in LED low at end of setup.
-  // digitalWrite(LED_5, LOW);        //Make built in LED low at end of setup.
   digitalWrite(LED_BUILTIN, LOW);  //Make built in LED low at end of setup.
 }
 //end setup()
 
 void loop() {
 
-  // if (availableDFPLAYER) {
-  //   if (!digitalRead(SW1)) {
-  //     dfPlayer.play(1);
-  //     Serial.print(digitalRead(SW1));
-  //     Serial.println(", playing track 1");
-  //   }
-  //   if (!digitalRead(SW2)) {
-  //     dfPlayer.play(2);
-  //     Serial.print(digitalRead(SW2));
-  //     Serial.println(", playing track 2");
-  //   }
-  //   if (!digitalRead(SW3)) {
-  //     dfPlayer.play(3);
-  //     Serial.print(digitalRead(SW3));
-  //     Serial.println(", playing track 3");
-  //   }
-  //   if (!digitalRead(SW4)) {
-  //     dfPlayer.play(5);
-  //     Serial.print(digitalRead(SW4));
-  //     Serial.println(", playing track 5");
-
-  //     delay(3000);
-  //   }
-  // }
-  // displayAlarm(); // check OLED i2cTest code and fix// OLED is not displaying the alarm message when the SW of emergency is trigerred
-
   //  wink();  // Heart beat aka activity indicator LED function.
-  led1.Update();
-  led2.Update();
-  led3.Update();
-  led4.Update();
-  led5.Update();
+
 }  //end loop()
