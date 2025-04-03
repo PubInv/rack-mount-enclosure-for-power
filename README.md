@@ -1,7 +1,15 @@
 # OEDCS
 Oxygen Engine Digital Control System, enclosure for.
 
-## Notes on Unit Fabrication
+## As of 2024 the Enclosure has Evolved to a 3U rack mount
+Simplified view of enclosure before connector and other holes added.
+![image](https://github.com/user-attachments/assets/d79ae34a-6640-4672-9050-6748058cb01c)
+
+Exploded view of enclosure parts and the "Plant Panel" too
+![image](https://github.com/user-attachments/assets/e740c59c-a321-4180-bd6a-aeef0f74510b)
+
+
+## Notes on BIG Enclosure Unit Fabrication of Spring 2023
 * Serial number 1  AKA the Austin Unit.
 LAN TYPE: SEEEDS STUDIO W5200
 MAC Address: FE:ED:1B:70:08:77  
